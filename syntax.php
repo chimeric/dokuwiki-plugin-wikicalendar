@@ -316,7 +316,7 @@ CALHEAD;
         $out .= '<td><div class="input">' . DOKU_LF;
         $out .= '<select id="month" name="plugin_wikicalendar_month">' . DOKU_LF;
  
-        for($i=1;$i<=11;$i++) {
+        for($i=1;$i<=12;$i++) {
             if($i == $this->showMonth) {
                 $out .= '<option value="'.$i.'" selected="selected">'.$this->langMonth[$i].'</option>' . DOKU_LF;
             } else {
