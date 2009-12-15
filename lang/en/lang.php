@@ -11,7 +11,7 @@ $lang['year']       = 'Year';
 $lang['mon']        = 'Month';
  
 $lang['days'][1]    = 'Monday';
-$lang['days'][2]    = 'Thuesday';
+$lang['days'][2]    = 'Tuesday';
 $lang['days'][3]    = 'Wednesday';
 $lang['days'][4]    = 'Thursday';
 $lang['days'][5]    = 'Friday';
