@@ -41,11 +41,13 @@ class action_plugin_wikicalendar extends DokuWiki_Action_Plugin {
      * Checks for calendar values for proper redirects
      */
     function handle_started(&$event, $param) {
-        if(array_key_exists('plugin_wikicalendar_month', $_SESSION[DOKU_COOKIE])) {
-            $_REQUEST['plugin_wikicalendar_month'] = $_SESSION[DOKU_COOKIE]['plugin_wikicalendar_month'];
-            $_REQUEST['plugin_wikicalendar_year']  = $_SESSION[DOKU_COOKIE]['plugin_wikicalendar_year'];
-            unset($_SESSION[DOKU_COOKIE]['plugin_wikicalendar_month']);
-            unset($_SESSION[DOKU_COOKIE]['plugin_wikicalendar_year']);
+        if(is_array($_SESSION[DOKU_COOKIE])) {
+            if(array_key_exists('plugin_wikicalendar_month', $_SESSION[DOKU_COOKIE])) {
+                $_REQUEST['plugin_wikicalendar_month'] = $_SESSION[DOKU_COOKIE]['plugin_wikicalendar_month'];
+                $_REQUEST['plugin_wikicalendar_year']  = $_SESSION[DOKU_COOKIE]['plugin_wikicalendar_year'];
+                unset($_SESSION[DOKU_COOKIE]['plugin_wikicalendar_month']);
+                unset($_SESSION[DOKU_COOKIE]['plugin_wikicalendar_year']);
+            }
         }
     }
 
