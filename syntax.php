@@ -213,6 +213,10 @@ CALHEAD;
  
         // create calendar weekday-headers
         $out .= "<tr>";
+        if($this->getConf('weekstart') == 'Sunday') {
+            $last = array_pop($this->langDays);
+            array_unshift($this->langDays, $last);
+        }
         foreach($this->langDays as $day) {
             $out .= '<td class="weekday">'.$day.'</td>'; 
         }
@@ -239,8 +243,9 @@ CALHEAD;
             if($wd == 0) $out .= '<tr>';
  
             // create blank fields up to the first day of the month
+            $offset = ($this->getConf('weekstart') == 'Sunday') ? 0 : 1;
             if(!$this->firstWeek) {
-                while($wd < ($this->MonthStart-1)) {
+                while($wd < ($this->MonthStart - $offset)) {
                     $out .= '<td class="blank">&nbsp;</td>';
                     $wd++;
                 }
