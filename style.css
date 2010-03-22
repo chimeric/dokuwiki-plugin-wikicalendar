@@ -90,8 +90,9 @@ div.dokuwiki table.plugin_wikicalendar td.today:hover div.abstract {
   position: relative;
   padding: 0.5em;
   left: 70px;
+  top: 15px;
   border: 1px solid __border__;
-  background: __highlight__;
+  background: #ff9;
   width: auto;
 }
  
