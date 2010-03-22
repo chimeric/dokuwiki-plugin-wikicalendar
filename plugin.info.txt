@@ -1,0 +1,8 @@
+# General Plugin Info do not edit
+base   wikicalendar
+author Michael Klier
+email  chi@chimeric.de
+date   2010-01-16
+name   Wikicalendar Plugin
+desc   Adds a simple calendar to a wiki page
+url    http://www.dokuwiki.org/plugin:wikicalendar
