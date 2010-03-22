@@ -112,6 +112,7 @@ class syntax_plugin_wikicalendar extends DokuWiki_Syntax_Plugin {
      */
     function render($mode, &$renderer, $data) {
         global $ID;
+        global $conf;
 
         // define some variables first
         $this->calendar_ns  = ($data[0]) ? $data[0] : $ID;
@@ -126,7 +127,18 @@ class syntax_plugin_wikicalendar extends DokuWiki_Syntax_Plugin {
         $this->today        = ($this->viewDate['mon'] == $this->curDate['mon'] && 
                                $this->viewDate['year'] == $this->curDate['year']) ? 
                                $this->curDate['mday'] : null;
-        $this->month_ns     = $this->calendar_ns.':'.$this->showYear.':'.$this->showMonth;
+
+        // if month directory exists we keep the old scheme
+        if(is_dir($conf['datadir'].'/'.str_replace(':','/',$this->calendar_ns.':'.$this->showYear.':'.$this->showMonth))) {
+            $this->month_ns = $this->calendar_ns.':'.$this->showYear.':'.$this->showMonth;
+        } else {
+            if($this->showMonth < 10) {
+                $this->month_ns = $this->calendar_ns.':'.$this->showYear.':0'.$this->showMonth;
+            } else {
+                $this->month_ns = $this->calendar_ns.':'.$this->showYear.':'.$this->showMonth;
+            }
+        }
+
         $this->MonthStart   = ($this->viewDate['wday'] == 0) ? 7 : $this->viewDate['wday'];
  
         if($mode == 'xhtml'){
@@ -209,8 +221,16 @@ CALHEAD;
         // create calendar-body
         for($i=1;$i<=$this->numDays;$i++) {
             $day = $i;
-            //set day-wikipage
-            $dayWP = $this->month_ns.':'.$day;
+            //set day-wikipage - use leading zeros on new pages
+            if($day < 10) {
+                if(page_exists($this->month_ns.':'.$day)) {
+                    $dayWP = $this->month_ns.':'.$day;
+                } else {
+                    $dayWP = $this->month_ns.':0'.$day;
+                }
+            } else {
+                $dayWP = $this->month_ns.':'.$day;
+            }
             // close row at end of week
             if($wd == 7) $out .= '</tr>';
             // set weekday
