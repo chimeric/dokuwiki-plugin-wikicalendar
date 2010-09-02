@@ -139,7 +139,11 @@ class syntax_plugin_wikicalendar extends DokuWiki_Syntax_Plugin {
             }
         }
 
-        $this->MonthStart   = ($this->viewDate['wday'] == 0) ? 7 : $this->viewDate['wday'];
+        if($this->MonthStart == 7 && $this->getConf('weekstart') == 'Sunday') {
+            $this->MonthStart = 0;
+        } else {
+            $this->MonthStart = ($this->viewDate['wday'] == 0) ? 7 : $this->viewDate['wday'];
+        }
  
         if($mode == 'xhtml'){
             // turn off caching
