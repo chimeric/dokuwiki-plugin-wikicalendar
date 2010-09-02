@@ -114,38 +114,44 @@ class syntax_plugin_wikicalendar extends DokuWiki_Syntax_Plugin {
         global $ID;
         global $conf;
 
-        // define some variables first
-        $this->calendar_ns  = ($data[0]) ? $data[0] : $ID;
-        $this->langDays     = $this->getLang('days');
-        $this->langMonth    = $this->getLang('month');
-        $this->curDate      = getdate(time());
-        $this->showMonth    = (is_numeric($_REQUEST['plugin_wikicalendar_month'])) ? $_REQUEST['plugin_wikicalendar_month'] : $this->curDate['mon'];
-        $this->showYear     = (is_numeric($_REQUEST['plugin_wikicalendar_year']))  ? $_REQUEST['plugin_wikicalendar_year']  : $this->curDate['year'];
-        $this->gTimestamp   = mktime(0,0,0,$this->showMonth,1,$this->showYear); 
-        $this->numDays      = date('t',$this->gTimestamp);
-        $this->viewDate     = getdate($this->gTimestamp);
-        $this->today        = ($this->viewDate['mon'] == $this->curDate['mon'] && 
-                               $this->viewDate['year'] == $this->curDate['year']) ? 
-                               $this->curDate['mday'] : null;
-
-        // if month directory exists we keep the old scheme
-        if(is_dir($conf['datadir'].'/'.str_replace(':','/',$this->calendar_ns.':'.$this->showYear.':'.$this->showMonth))) {
-            $this->month_ns = $this->calendar_ns.':'.$this->showYear.':'.$this->showMonth;
-        } else {
-            if($this->showMonth < 10) {
-                $this->month_ns = $this->calendar_ns.':'.$this->showYear.':0'.$this->showMonth;
-            } else {
-                $this->month_ns = $this->calendar_ns.':'.$this->showYear.':'.$this->showMonth;
-            }
-        }
-
-        if($this->MonthStart == 7 && $this->getConf('weekstart') == 'Sunday') {
-            $this->MonthStart = 0;
-        } else {
-            $this->MonthStart = ($this->viewDate['wday'] == 0) ? 7 : $this->viewDate['wday'];
-        }
- 
         if($mode == 'xhtml'){
+
+            $tz = date_default_timezone_get();
+            if($this->getConf('timezone')) {
+                date_default_timezone_set($this->getConf('timezone'));
+            }
+
+            // define some variables first
+            $this->calendar_ns  = ($data[0]) ? $data[0] : $ID;
+            $this->langDays     = $this->getLang('days');
+            $this->langMonth    = $this->getLang('month');
+            $this->curDate      = getdate(time());
+            $this->showMonth    = (is_numeric($_REQUEST['plugin_wikicalendar_month'])) ? $_REQUEST['plugin_wikicalendar_month'] : $this->curDate['mon'];
+            $this->showYear     = (is_numeric($_REQUEST['plugin_wikicalendar_year']))  ? $_REQUEST['plugin_wikicalendar_year']  : $this->curDate['year'];
+            $this->gTimestamp   = mktime(0,0,0,$this->showMonth,1,$this->showYear); 
+            $this->numDays      = date('t',$this->gTimestamp);
+            $this->viewDate     = getdate($this->gTimestamp);
+            $this->today        = ($this->viewDate['mon'] == $this->curDate['mon'] && 
+                                   $this->viewDate['year'] == $this->curDate['year']) ? 
+                                   $this->curDate['mday'] : null;
+
+            // if month directory exists we keep the old scheme
+            if(is_dir($conf['datadir'].'/'.str_replace(':','/',$this->calendar_ns.':'.$this->showYear.':'.$this->showMonth))) {
+                $this->month_ns = $this->calendar_ns.':'.$this->showYear.':'.$this->showMonth;
+            } else {
+                if($this->showMonth < 10) {
+                    $this->month_ns = $this->calendar_ns.':'.$this->showYear.':0'.$this->showMonth;
+                } else {
+                    $this->month_ns = $this->calendar_ns.':'.$this->showYear.':'.$this->showMonth;
+                }
+            }
+
+            if($this->MonthStart == 7 && $this->getConf('weekstart') == 'Sunday') {
+                $this->MonthStart = 0;
+            } else {
+                $this->MonthStart = ($this->viewDate['wday'] == 0) ? 7 : $this->viewDate['wday'];
+            }
+ 
             // turn off caching
             $renderer->info['cache'] = false;
  
@@ -154,8 +160,10 @@ class syntax_plugin_wikicalendar extends DokuWiki_Syntax_Plugin {
             $renderer->doc .= $this->_form_go2();
             $renderer->doc .= '</div>' . DOKU_LF;
  
+            date_default_timezone_set($tz);
             return true;
         }
+
         return false;
     }
  
@@ -166,7 +174,7 @@ class syntax_plugin_wikicalendar extends DokuWiki_Syntax_Plugin {
      */
     function _month_xhtml() {
         global $ID;
- 
+
         $script = script();
  
         $prevMonth  = ($this->showMonth-1 > 0)  ? ($this->showMonth-1) : 12;

@@ -4,3 +4,4 @@
  * @author Michael Klier <chi@chimeric.de>
  */
 $conf['weekstart'] = 'Monday';
+$conf['timezone']  = false;
