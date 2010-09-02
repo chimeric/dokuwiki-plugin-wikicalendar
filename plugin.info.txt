@@ -2,7 +2,7 @@
 base   wikicalendar
 author Michael Klier
 email  chi@chimeric.de
-date   2010-03-22
+date   2010-09-02
 name   Wikicalendar Plugin
 desc   Adds a simple calendar to a wiki page
 url    http://www.dokuwiki.org/plugin:wikicalendar
