@@ -102,7 +102,7 @@ class syntax_plugin_wikicalendar extends DokuWiki_Syntax_Plugin {
     /**
      * Handle the match
      */
-    function handle($match, $state, $pos, &$handler){
+    function handle($match, $state, $pos, Doku_Handler $handler){
         $match = substr($match,6,-2);
         return array($match);
     }
@@ -110,7 +110,7 @@ class syntax_plugin_wikicalendar extends DokuWiki_Syntax_Plugin {
     /**
      * Create output
      */
-    function render($mode, &$renderer, $data) {
+    function render($mode, Doku_Renderer $renderer, $data) {
         global $ID;
         global $conf;
 
