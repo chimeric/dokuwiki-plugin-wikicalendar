@@ -31,7 +31,7 @@ class action_plugin_wikicalendar extends DokuWiki_Action_Plugin {
     }
 
     // register hook
-    function register(&$controller) {
+    function register(Doku_Event_Handler $controller) {
         $controller->register_hook('ACTION_SHOW_REDIRECT', 'BEFORE', $this, 'handle_redirect');
         $controller->register_hook('HTML_EDITFORM_OUTPUT', 'BEFORE', $this, 'handle_form');
         $controller->register_hook('DOKUWIKI_STARTED', 'BEFORE', $this, 'handle_started');
